@@ -69,39 +69,41 @@
 
         while(!token)
         {
-            token = true;
-
-            fetch (url, { method: 'POST', body: data, })
-            .then(response => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    clearInterval(timer);
-                    flag = false;
-                    token = false;
-                }
-            }).catch(err => {
-                clearInterval(timer);
-                flag = false;
-                document.getElementById('warning').innerText = err;
-                token = false;
-            }).then(data => {
-                const result_text = document.getElementById(type);
-
-                result_text.innerHTML = '&nbsp;&nbsp;' + data[0];
-
-                clearInterval(timer);
-                time_obj.innerText = 'Done!';
-                flag = false;
-                token = false;
-            }).catch(err => {
-                clearInterval(timer);
-                flag = false;
-                document.getElementById('warning').innerText = err;
-                token = false;
-            });
-
+            sleep(1000);
         }
+
+        token = true;
+
+        fetch (url, { method: 'POST', body: data, })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                clearInterval(timer);
+                flag = false;
+                token = false;
+            }
+        }).catch(err => {
+            clearInterval(timer);
+            flag = false;
+            document.getElementById('warning').innerText = err;
+            token = false;
+        }).then(data => {
+            const result_text = document.getElementById(type);
+
+            result_text.innerHTML = '&nbsp;&nbsp;' + data[0];
+
+            clearInterval(timer);
+            time_obj.innerText = 'Done!';
+            flag = false;
+            token = false;
+        }).catch(err => {
+            clearInterval(timer);
+            flag = false;
+            document.getElementById('warning').innerText = err;
+            token = false;
+        });
+
     }
 
 
