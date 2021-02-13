@@ -17,8 +17,8 @@
 
     window.onload = () => {
         time_obj = document.getElementById("timer");
-        flag = false;
-        chars = [];
+        flag = false;       // 더블 클릭 체크
+        token = false;      // 리퀘스트 토큰
     }
 
     function double_submit_check() {
@@ -60,36 +60,48 @@
             time_obj.innerText = `${start / 10} 's`;
         }, 100);
 
-        fetch_data(story_url, formData, story);
-        fetch_data(power_url, formData, power);
+        fetch_data(story_url, formData, "story");
+        fetch_data(power_url, formData, "power");
     }
 
 
     function fetch_data(url, data, type){
-        fetch (url, { method: 'POST', body: data, })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
+
+        while(!token)
+        {
+            token = true;
+
+            fetch (url, { method: 'POST', body: data, })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    clearInterval(timer);
+                    flag = false;
+                    token = false;
+                }
+            }).catch(err => {
                 clearInterval(timer);
-            }
-        }).catch(err => {
-            clearInterval(timer);
-            flag = false;
-            document.getElementById('warning').innerText = err;
-        }).then(data => {
-            const result_text = document.getElementById(type);
+                flag = false;
+                document.getElementById('warning').innerText = err;
+                token = false;
+            }).then(data => {
+                const result_text = document.getElementById(type);
 
-            result_text.innerHTML = '&nbsp;&nbsp;' + data[0];
+                result_text.innerHTML = '&nbsp;&nbsp;' + data[0];
 
-            clearInterval(timer);
-            time_obj.innerText = 'Done!';
-            flag = false;
-        }).catch(err => {
-            clearInterval(timer);
-            flag = false;
-            document.getElementById('warning').innerText = err;
-        });
+                clearInterval(timer);
+                time_obj.innerText = 'Done!';
+                flag = false;
+                token = false;
+            }).catch(err => {
+                clearInterval(timer);
+                flag = false;
+                document.getElementById('warning').innerText = err;
+                token = false;
+            });
+
+        }
     }
 
 
