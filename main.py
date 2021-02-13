@@ -50,13 +50,8 @@ def handle_requests_by_batch():
                 continue
 
             for requests in request_batch:
-                types = requests['input'].pop(0)
-
                 try:
-                    if types == 'story':
-                        requests["output"] = mk_superhero_story(requests['input'][0], requests['input'][1])
-                    elif types == 'power':
-                        requests["output"] = mk_superhero_power(requests['input'][0], requests['input'][1])
+                    requests["output"] = mk_superhero(requests['input'][0], requests['input'][1])
                 except Exception as e:
                     requests["output"] = e
 
@@ -67,67 +62,43 @@ handler = Thread(target=handle_requests_by_batch).start()
 ##
 # GPT-2 generator.
 # Make superhero story.
-def mk_superhero_story(name, length):
+def mk_superhero(name, length):
     try:
         text = name + " is"
-        input_ids = story_tokenizer.encode(text, return_tensors='pt')
+        story_ids = story_tokenizer.encode(text, return_tensors='pt')
+        power_ids = power_tokenizer.encode(text, return_tensors='pt')
 
         # input_ids also need to apply gpu device!
-        input_ids = input_ids.to(device)
+        story_ids = story_ids.to(device)
+        power_ids = power_ids.to(device)
 
-        min_length = len(input_ids.tolist()[0])
+        min_length = len(story_ids.tolist()[0])
         length += min_length
 
         length = length if length > 50 else 50
 
         # model generating
-        sample_outputs = story_model.generate(input_ids, pad_token_id=50256,
-                                              do_sample=True,
-                                              max_length=length,
-                                              min_length=min_length,
-                                              top_k=40,
-                                              num_return_sequences=1)
+        story_outputs = story_model.generate(story_ids, pad_token_id=50256,
+                                             do_sample=True,
+                                             max_length=length,
+                                             min_length=min_length,
+                                             top_k=40,
+                                             num_return_sequences=1)
+
+        power_outputs = power_model.generate(power_ids, pad_token_id=50256,
+                                             do_sample=True,
+                                             max_length=length,
+                                             min_length=min_length,
+                                             top_k=40,
+                                             num_return_sequences=1)
 
         result = dict()
 
-        for idx, sample_output in enumerate(sample_outputs):
-            result[idx] = story_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
+        for idx, sample_output in enumerate(story_outputs):
+            result[0] = story_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
 
-        return result
-
-    except Exception as e:
-        print('Error occur in script generating!', e)
-        return jsonify({'error': e}), 500
-
-
-##
-# GPT-2 generator.
-# Make superhero power.
-def mk_superhero_power(name, length):
-    try:
-        text = name + "'s power is"
-        input_ids = power_tokenizer.encode(text, return_tensors='pt')
-
-        # input_ids also need to apply gpu device!
-        input_ids = input_ids.to(device)
-
-        min_length = len(input_ids.tolist()[0])
-        length += min_length
-
-        length = length if length > 50 else 50
-
-        # model generating
-        sample_outputs = power_model.generate(input_ids, pad_token_id=50256,
-                                              do_sample=True,
-                                              max_length=length,
-                                              min_length=min_length,
-                                              top_k=40,
-                                              num_return_sequences=1)
-
-        result = dict()
-
-        for idx, sample_output in enumerate(sample_outputs):
-            result[idx] = power_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
+        for idx, sample_output in enumerate(power_outputs):
+            result[1] = power_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
 
         return result
 
@@ -138,23 +109,16 @@ def mk_superhero_power(name, length):
 
 ##
 # Get post request page.
-@app.route('/<types>', methods=['POST'])
-def generate(types):
-
-    args = []
-
-    if types == 'story':
-        args.append('story')
-    elif types == 'power':
-        args.append('power')
-    else:
-        return jsonify({'Error': 'The wrong address.'}), 400
+@app.route('/superhero', methods=['POST'])
+def generate():
 
     # GPU app can process only one request in one time.
     if requests_queue.qsize() > BATCH_SIZE:
         return jsonify({'Error': 'Too Many Requests'}), 429
 
     try:
+        args = []
+
         name = request.form['name']
         length = int(request.form['length'])
 

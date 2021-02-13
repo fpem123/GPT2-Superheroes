@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>GPT-2 The Office script</title>
+    <title>GPT-2 Superheroes</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -18,8 +18,8 @@
     window.onload = () => {
         time_obj = document.getElementById("timer");
         flag = false;       // 더블 클릭 체크
-        token = false;      // 리퀘스트 토큰
     }
+
 
     function double_submit_check() {
         if (flag) {
@@ -32,6 +32,7 @@
             return false;
         }
     }
+
 
     function send_req() {
         if (double_submit_check()){
@@ -47,8 +48,7 @@
         }
 
         const formData = new FormData();
-        const story_url = "/story";
-        const power_url = "/power";
+        const url = "/superhero";
         let start = 0;
 
         formData.append('name', name);
@@ -60,51 +60,37 @@
             time_obj.innerText = `${start / 10} 's`;
         }, 100);
 
-        fetch_data(story_url, formData, "story");
-        fetch_data(power_url, formData, "power");
-    }
 
-
-    function fetch_data(url, data, type){
-
-        while(!token)
-        {
-            sleep(1000);
-        }
-
-        token = true;
-
-        fetch (url, { method: 'POST', body: data, })
+        fetch (url, { method: 'POST', body: formData, })
         .then(response => {
             if (response.status === 200) {
                 return response.json();
             } else {
                 clearInterval(timer);
                 flag = false;
-                token = false;
             }
         }).catch(err => {
             clearInterval(timer);
             flag = false;
             document.getElementById('warning').innerText = err;
-            token = false;
         }).then(data => {
-            const result_text = document.getElementById(type);
+            const story_text = document.getElementById('story');
+            const power_text = document.getElementById('power');
 
-            result_text.innerHTML = '&nbsp;&nbsp;' + data[0];
+            story_text.innerHTML = '&nbsp;&nbsp;' + data[0];
+            power_text.innerHTML = '&nbsp;&nbsp;' + data[1];
 
             clearInterval(timer);
             time_obj.innerText = 'Done!';
             flag = false;
-            token = false;
         }).catch(err => {
             clearInterval(timer);
             flag = false;
             document.getElementById('warning').innerText = err;
-            token = false;
         });
 
     }
+
 
 
 </script>
