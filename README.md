@@ -40,7 +40,7 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 ## * With CLI *
 
-    curl -X POST "https://master-gpt2-the-office-fpem123.endpoint.ainize.ai/office" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=Michael" -F "text=Hello" -F "length=150"
+    
 
 ## * With swagger *
 
