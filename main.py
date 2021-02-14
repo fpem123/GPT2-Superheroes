@@ -2,7 +2,7 @@
     Name: main.py
     Writer: Hoseop Lee, Ainizer
     Rule: Flask app server
-    update: 21.02.09
+    update: 21.02.14
 '''
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -77,7 +77,7 @@ def mk_superhero(name, length):
 
         length = length if length > 50 else 50
 
-        # model generating
+        # story model generating
         story_outputs = story_model.generate(story_ids, pad_token_id=50256,
                                              do_sample=True,
                                              max_length=length,
@@ -85,6 +85,7 @@ def mk_superhero(name, length):
                                              top_k=40,
                                              num_return_sequences=1)
 
+        # power model generating
         power_outputs = power_model.generate(power_ids, pad_token_id=50256,
                                              do_sample=True,
                                              max_length=length,
