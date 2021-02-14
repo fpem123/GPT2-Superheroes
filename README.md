@@ -16,6 +16,7 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
     Train runtime: 6865.2586 secs
     Loss: 0.0278
 
+
 * Superhero power model
 
 
@@ -43,8 +44,8 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 ## * With swagger *
 
-API page: [Ainize](https://ainize.ai/fpem123/GPT2-TheOffice?branch=master)
+API page: [Ainize](https://ainize.ai/fpem123/GPT2-Superheroes?branch=master)
 
 ## * With a Demo *
 
-Demo page: [End-point](https://master-gpt2-the-office-fpem123.endpoint.ainize.ai/)
+Demo page: [End-point](https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/)
