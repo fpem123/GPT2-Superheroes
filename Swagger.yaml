@@ -22,7 +22,7 @@ servers:
   - url: https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/
 
 paths:
-  /friends:
+  /superhero:
     post:
       requestBody:
         required: true
