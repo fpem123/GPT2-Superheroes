@@ -139,38 +139,6 @@ def mk_superhero_power(name, length):
 
 ##
 # Get post request page.
-@app.route('/superhero', methods=['POST'])
-def generate():
-
-    # GPU app can process only one request in one time.
-    if requests_queue.qsize() > BATCH_SIZE:
-        return jsonify({'Error': 'Too Many Requests'}), 429
-
-    try:
-        args = []
-
-        name = request.form['name']
-        length = int(request.form['length'])
-
-        args.append(name)
-        args.append(length)
-
-    except Exception as e:
-        return jsonify({'message': 'Invalid request'}), 500
-
-    # input a request on queue
-    req = {'input': args}
-    requests_queue.put(req)
-
-    # wait
-    while 'output' not in req:
-        time.sleep(CHECK_INTERVAL)
-
-    return jsonify(req['output'])
-
-
-##
-# Get post request page.
 @app.route('/superhero/<types>', methods=['POST'])
 def generate(types):
     args = []
