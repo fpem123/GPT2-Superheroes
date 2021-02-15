@@ -40,7 +40,17 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 ## * With CLI *
 
-    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=Superman" -F "length=100"
+* Hero's Story
+
+
+    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/story" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=superman" -F "length=50"
+
+
+* Hero's Power
+
+
+    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/power" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=Superman" -F "length=50"
+
 
 ## * With swagger *
 
