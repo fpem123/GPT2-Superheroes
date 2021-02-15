@@ -38,7 +38,14 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
     length: The size of generated text.
 
 
+### Output format
+
+    {"0": generated text}
+
+
 ## * With CLI *
+
+### Input example
 
 * Hero's Story
 
@@ -50,6 +57,20 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 
     curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/power" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=Superman" -F "length=50"
+
+
+### Output example
+
+* Hero's Story
+
+
+    {
+      "0": "Superman is resurrected and finds his way back to Metropolis. Superman tracks down Superboy and takes him to the Fortress of Solitude. He tries to make him stop but is unable. Superboy-Prime goes on the attack, but Superman is able to keep"
+    }
+
+* Hero's Power
+
+
 
 
 ## * With swagger *

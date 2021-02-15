@@ -28,6 +28,7 @@ power_model = AutoModelForCausalLM.from_pretrained('./GPT2-large_SuperheroesPowe
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 story_model.to(device)
+power_model.to(device)
 
 requests_queue = Queue()    # request queue.
 BATCH_SIZE = 1              # max request size.
