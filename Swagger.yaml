@@ -22,12 +22,12 @@ servers:
   - url: https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/
 
 paths:
-  /superhero:
+  /superhero/story:
     post:
       requestBody:
         required: true
         description: |
-          This request will generate superhero story and power.
+          This request will generate superhero story.
 
           Request body example
 
@@ -49,7 +49,49 @@ paths:
                 - name
                 - text
                 - length
-      responses:   # Set response
+      responses: # Set response
+        '200':
+          description: "Successful Response"
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: "Bad Request Error"
+        '429':
+          description: "Too many requests"
+        '500':
+          description: "Server-side Error"
+
+
+  /superhero/power:
+    post:
+      requestBody:
+        required: true
+        description: |
+          This request will generate superhero power.
+
+          Request body example
+
+              name: Superman
+              length: 150
+
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "Your superhero name."
+                length:
+                  type: string
+                  description: "The size of text."
+              required:
+                - name
+                - text
+                - length
+      responses: # Set response
         '200':
           description: "Successful Response"
           content:

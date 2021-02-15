@@ -51,7 +51,13 @@ def handle_requests_by_batch():
 
             for requests in request_batch:
                 try:
-                    requests["output"] = mk_superhero(requests['input'][0], requests['input'][1])
+                    types = requests["input"].pop(0)
+
+                    if types == 'story':
+                        requests["output"] = mk_superhero_story(requests['input'][0], requests['input'][1])
+                    elif types == 'power':
+                        requests["output"] = mk_superhero_power(requests['input'][0], requests['input'][1])
+
                 except Exception as e:
                     requests["output"] = e
 
@@ -62,15 +68,13 @@ handler = Thread(target=handle_requests_by_batch).start()
 ##
 # GPT-2 generator.
 # Make superhero story.
-def mk_superhero(name, length):
+def mk_superhero_story(name, length):
     try:
         text = name + " is"
         story_ids = story_tokenizer.encode(text, return_tensors='pt')
-        power_ids = power_tokenizer.encode(text, return_tensors='pt')
 
         # input_ids also need to apply gpu device!
         story_ids = story_ids.to(device)
-        power_ids = power_ids.to(device)
 
         min_length = len(story_ids.tolist()[0])
         length += min_length
@@ -85,6 +89,34 @@ def mk_superhero(name, length):
                                              top_k=40,
                                              num_return_sequences=1)
 
+        result = dict()
+
+        for idx, sample_output in enumerate(story_outputs):
+            result[0] = story_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
+
+        return result
+
+    except Exception as e:
+        print('Error occur in script generating!', e)
+        return jsonify({'error': e}), 500
+
+
+##
+# GPT-2 generator.
+# Make superhero power.
+def mk_superhero_power(name, length):
+    try:
+        text = name + " is"
+        power_ids = power_tokenizer.encode(text, return_tensors='pt')
+
+        # input_ids also need to apply gpu device!
+        power_ids = power_ids.to(device)
+
+        min_length = len(power_ids.tolist()[0])
+        length += min_length
+
+        length = length if length > 50 else 50
+
         # power model generating
         power_outputs = power_model.generate(power_ids, pad_token_id=50256,
                                              do_sample=True,
@@ -94,9 +126,6 @@ def mk_superhero(name, length):
                                              num_return_sequences=1)
 
         result = dict()
-
-        for idx, sample_output in enumerate(story_outputs):
-            result[0] = story_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
 
         for idx, sample_output in enumerate(power_outputs):
             result[1] = power_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
@@ -119,6 +148,45 @@ def generate():
 
     try:
         args = []
+
+        name = request.form['name']
+        length = int(request.form['length'])
+
+        args.append(name)
+        args.append(length)
+
+    except Exception as e:
+        return jsonify({'message': 'Invalid request'}), 500
+
+    # input a request on queue
+    req = {'input': args}
+    requests_queue.put(req)
+
+    # wait
+    while 'output' not in req:
+        time.sleep(CHECK_INTERVAL)
+
+    return jsonify(req['output'])
+
+
+##
+# Get post request page.
+@app.route('/superhero/<types>', methods=['POST'])
+def generate(types):
+    args = []
+
+    if types == 'story':
+        args.append('story')
+    elif types == 'power':
+        args.append('power')
+    else:
+        return jsonify({'Error': 'Unknown type'}), 404
+
+    # GPU app can process only one request in one time.
+    if requests_queue.qsize() > BATCH_SIZE:
+        return jsonify({'Error': 'Too Many Requests'}), 429
+
+    try:
 
         name = request.form['name']
         length = int(request.form['length'])

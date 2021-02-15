@@ -34,7 +34,7 @@
     }
 
 
-    function send_req() {
+    function send_story_req() {
         if (double_submit_check()){
             return ;
         }
@@ -48,7 +48,7 @@
         }
 
         const formData = new FormData();
-        const url = "/superhero";
+        const url = "/superhero/story";
         let start = 0;
 
         formData.append('name', name);
@@ -75,10 +75,62 @@
             document.getElementById('warning').innerText = err;
         }).then(data => {
             const story_text = document.getElementById('story');
+            story_text.innerHTML = '&nbsp;&nbsp;' + data[0];
+
+            clearInterval(timer);
+            time_obj.innerText = 'Done!';
+            flag = false;
+        }).catch(err => {
+            clearInterval(timer);
+            flag = false;
+            document.getElementById('warning').innerText = err;
+        });
+
+    }
+
+    function send_power_req() {
+        if (double_submit_check()){
+            return ;
+        }
+
+        const name = document.getElementById("name").value;
+
+        if (name == '') {
+            document.getElementById('warning').innerText = 'Please fill text!';
+            flag = false;
+            return ;
+        }
+
+        const formData = new FormData();
+        const url = "/superhero/power";
+        let start = 0;
+
+        formData.append('name', name);
+        formData.append('length', 150);
+
+        // timer
+        timer = setInterval(() => {
+            start += 1;
+            time_obj.innerText = `${start / 10} 's`;
+        }, 100);
+
+
+        fetch (url, { method: 'POST', body: formData, })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                clearInterval(timer);
+                flag = false;
+            }
+        }).catch(err => {
+            clearInterval(timer);
+            flag = false;
+            document.getElementById('warning').innerText = err;
+        }).then(data => {
             const power_text = document.getElementById('power');
 
-            story_text.innerHTML = '&nbsp;&nbsp;' + data[0];
-            power_text.innerHTML = '&nbsp;&nbsp;' + data[1];
+            power_text.innerHTML = '&nbsp;&nbsp;' + data[0];
 
             clearInterval(timer);
             time_obj.innerText = 'Done!';
@@ -170,8 +222,9 @@
             <div class="generate">
                 <h3>Try it!</h3><br>
                 <label>Hero's name: </label>
-                <input type="text" id="name" style="width:40%">
-                <button class="btn btn-primary btn=lg" type="submit" id="button" onclick="send_req();">submit</button><br>
+                <input type="text" id="name" style="width:40%"><br>
+                <button class="btn btn-primary btn=lg" type="submit" id="button1" onclick="send_story_req();">Story</button>
+                <button class="btn btn-primary btn=lg" type="submit" id="button2" onclick="send_power_req();">Power</button><br>
                 <label>Timer:&nbsp;</label><label id="timer">0.0</label><br>
                 <b><label id="warning" style="color:red;"></label></b>
             </div>
