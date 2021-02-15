@@ -70,7 +70,10 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 * Hero's Power
 
-
+    
+    {
+      "0": "Superman is able to generate great amounts of physical force through kinetic energy, simulating superhuman strength, even in a stationary position. This \"free-running\" ability allows him to move at speeds much faster than a normal human. He can use this speed to attack"
+    }
 
 
 ## * With swagger *
