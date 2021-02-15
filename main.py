@@ -128,7 +128,7 @@ def mk_superhero_power(name, length):
         result = dict()
 
         for idx, sample_output in enumerate(power_outputs):
-            result[1] = power_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
+            result[0] = power_tokenizer.decode(sample_output.tolist(), skip_special_tokens=True)
 
         return result
 
