@@ -2,7 +2,7 @@
 
 [![Run on Ainize](https://ainize.ai/images/run_on_ainize_button.svg)](https://ainize.web.app/redirect?git_repo=https://github.com/fpem123/GPT2-Superheroes)
 
-This project generate The Office script using GPT-2 model.
+This project generate Superhero story and power using GPT-2 model.
 
 Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp-dataset)
 
@@ -61,18 +61,18 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 ### Output example
 
-* Hero's Story
+Hero's Story
 
 
     {
-      "0": "Superman is resurrected and finds his way back to Metropolis. Superman tracks down Superboy and takes him to the Fortress of Solitude. He tries to make him stop but is unable. Superboy-Prime goes on the attack, but Superman is able to keep"
+        "0": "Superman is resurrected and finds his way back to Metropolis. Superman tracks down Superboy and takes him to the Fortress of Solitude. He tries to make him stop but is unable. Superboy-Prime goes on the attack, but Superman is able to keep"
     }
 
-* Hero's Power
+Hero's Power 
 
-    
+  
     {
-      "0": "Superman is able to generate great amounts of physical force through kinetic energy, simulating superhuman strength, even in a stationary position. This \"free-running\" ability allows him to move at speeds much faster than a normal human. He can use this speed to attack"
+        "0": "Superman is able to generate great amounts of physical force through kinetic energy, simulating superhuman strength, even in a stationary position. This \"free-running\" ability allows him to move at speeds much faster than a normal human. He can use this speed to attack"
     }
 
 
