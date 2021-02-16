@@ -116,7 +116,7 @@ def mk_superhero_power(name, length):
         min_length = len(power_ids.tolist()[0])
         length += min_length
 
-        length = length if length > 50 else 50
+        length = length if length > 0 else 1
 
         # power model generating
         power_outputs = power_model.generate(power_ids, pad_token_id=50256,
