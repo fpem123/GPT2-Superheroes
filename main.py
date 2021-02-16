@@ -78,9 +78,10 @@ def mk_superhero_story(name, length):
         story_ids = story_ids.to(device)
 
         min_length = len(story_ids.tolist()[0])
-        length += min_length
 
-        length = length if length > 50 else 50
+        length = length if length > 0 else 1
+
+        length += min_length
 
         # story model generating
         story_outputs = story_model.generate(story_ids, pad_token_id=50256,
@@ -114,9 +115,10 @@ def mk_superhero_power(name, length):
         power_ids = power_ids.to(device)
 
         min_length = len(power_ids.tolist()[0])
-        length += min_length
 
         length = length if length > 0 else 1
+
+        length += min_length
 
         # power model generating
         power_outputs = power_model.generate(power_ids, pad_token_id=50256,
