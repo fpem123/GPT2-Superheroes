@@ -28,13 +28,13 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 
 ### How to use
 
-    * First, Fill what the hero name. This will be base of story and power.
+    * First, Fill what the text. This will be base of story and power.
     * And then, Fill number in length. Text is created as long as "length". I recommend between 100 and 300.
     * If length is so big, generate time will be long.
 
 ### Post parameter
 
-    name: The hero name.
+    text: Base text for generate
     length: The size of generated text.
 
 
@@ -50,13 +50,13 @@ Fine tuning data: [Kaggle](https://www.kaggle.com/jonathanbesomi/superheroes-nlp
 * Hero's Story
 
 
-    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/story" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=superman" -F "length=50"
+    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/story" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "text=superman is" -F "length=50"
 
 
 * Hero's Power
 
 
-    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/power" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "name=Superman" -F "length=50"
+    curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/power" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "text=Superman is" -F "length=50"
 
 
 ### Output example

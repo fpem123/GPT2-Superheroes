@@ -69,9 +69,8 @@ handler = Thread(target=handle_requests_by_batch).start()
 ##
 # GPT-2 generator.
 # Make superhero story.
-def mk_superhero_story(name, length):
+def mk_superhero_story(text, length):
     try:
-        text = name + " is"
         story_ids = story_tokenizer.encode(text, return_tensors='pt')
 
         # input_ids also need to apply gpu device!
@@ -106,9 +105,8 @@ def mk_superhero_story(name, length):
 ##
 # GPT-2 generator.
 # Make superhero power.
-def mk_superhero_power(name, length):
+def mk_superhero_power(text, length):
     try:
-        text = name + " is"
         power_ids = power_tokenizer.encode(text, return_tensors='pt')
 
         # input_ids also need to apply gpu device!
@@ -159,10 +157,10 @@ def generate(types):
 
     try:
 
-        name = request.form['name']
+        text = request.form['text']
         length = int(request.form['length'])
 
-        args.append(name)
+        args.append(text)
         args.append(length)
 
     except Exception as e:

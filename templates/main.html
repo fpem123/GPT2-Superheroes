@@ -39,9 +39,9 @@
             return ;
         }
 
-        const name = document.getElementById("name").value;
+        const text = document.getElementById("text").value;
 
-        if (name == '') {
+        if (text == '') {
             document.getElementById('warning').innerText = 'Please fill text!';
             flag = false;
             return ;
@@ -51,7 +51,7 @@
         const url = "/superhero/story";
         let start = 0;
 
-        formData.append('name', name);
+        formData.append('text', text);
         formData.append('length', 150);
 
         // timer
@@ -93,9 +93,9 @@
             return ;
         }
 
-        const name = document.getElementById("name").value;
+        const text = document.getElementById("text").value;
 
-        if (name == '') {
+        if (text == '') {
             document.getElementById('warning').innerText = 'Please fill text!';
             flag = false;
             return ;
@@ -105,7 +105,7 @@
         const url = "/superhero/power";
         let start = 0;
 
-        formData.append('name', name);
+        formData.append('text', text);
         formData.append('length', 150);
 
         // timer
@@ -199,7 +199,7 @@
             <div class="sample">
                 <h3><label>Example</label></h3>
                 <h5><label>Input</label></h5>
-                <label>&nbsp;&nbsp;Hero's name: Superman</label><br><br>
+                <label>&nbsp;&nbsp;Input text: Superman is</label><br><br>
                 <h5><label>Hero's story</label></h5>
                 <label>&nbsp;&nbsp;Superman is revived and he defeats Kobra. Many months later, Superboy-Prime is found by the Joker.
                     He reveals that the Joker is responsible for the riots of Gehenna, and he seeks to destroy the cult of Joker.
@@ -221,8 +221,8 @@
 
             <div class="generate">
                 <h3>Try it!</h3><br>
-                <label>Hero's name: </label>
-                <input type="text" id="name" style="width:40%"><br>
+                <label>Input text: </label>
+                <input type="text" id="text" style="width:40%"><br>
                 <button class="btn btn-primary btn=lg" type="submit" id="button1" onclick="send_story_req();">Story</button>
                 <button class="btn btn-primary btn=lg" type="submit" id="button2" onclick="send_power_req();">Power</button><br>
                 <label>Timer:&nbsp;</label><label id="timer">0.0</label><br>

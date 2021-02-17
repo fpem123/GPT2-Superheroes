@@ -10,7 +10,7 @@ info:
     ---
       How to use:
 
-      * First, Fill what the hero name. This will be base of story and power.
+      * First, Fill what the text. This will be base of story and power.
       * And then, Fill number in length. Text is created as long as "length". I recommend between 100 and 300.
       * If length is so big, generate time will be long.
     ---
@@ -31,7 +31,7 @@ paths:
 
           Request body example
 
-              name: Superman
+              text: Superman is
               length: 150
 
         content:
@@ -39,14 +39,13 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                text:
                   type: string
-                  description: "Your superhero name."
+                  description: "Base text for generate."
                 length:
                   type: string
                   description: "The size of text."
               required:
-                - name
                 - text
                 - length
       responses: # Set response
@@ -73,7 +72,7 @@ paths:
 
           Request body example
 
-              name: Superman
+              text: Superman is
               length: 150
 
         content:
@@ -81,14 +80,13 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                text:
                   type: string
-                  description: "Your superhero name."
+                  description: "Base text for generate"
                 length:
                   type: string
                   description: "The size of text."
               required:
-                - name
                 - text
                 - length
       responses: # Set response
