@@ -34,6 +34,11 @@ paths:
               text: Superman is
               length: 150
 
+          curl example
+
+              curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/story" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "text=superman is" -F "length=50"
+
+
         content:
           multipart/form-data:
             schema:
@@ -74,6 +79,11 @@ paths:
 
               text: Superman is
               length: 150
+
+          curl example
+
+              curl -X POST "https://master-gpt2-superheroes-fpem123.endpoint.ainize.ai/superhero/power" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "text=Superman is" -F "length=50"
+
 
         content:
           multipart/form-data:
